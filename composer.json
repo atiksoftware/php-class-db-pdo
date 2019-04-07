@@ -1,0 +1,17 @@
+{
+    "name": "atiksoftware/php-class-db-pdo",
+    "description": "PDOModel - Library of PHP functions for intracting database using PDO",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Atiksoftware Corporation",
+            "email": "atiksoftware@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload" : {
+        "psr-4" : {
+            "Atiksoftware\\Database\\" : "src"
+        }
+	}
+}
