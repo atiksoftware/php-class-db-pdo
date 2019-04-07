@@ -196,9 +196,213 @@ $result =  $pdomodel->executeQuery("select * from emp where empId = ?", array(39
 ```
 
 
-### Database Connection
+### TABLE
 ```php
 
+```
+
+
+### GGGGGGGGGGGGGGGGGGGGG
+```php
+# Get All Database
+/* Delete function */
+$pdomodel->where("orderId", 7);//setting where condition
+$pdomodel->delete("order");
+//Example 1
+$pdomodel->where("orderId", 7);
+$pdomodel->delete("order");
+ 
+//Example 2
+$pdomodel->where("firstName", 'john');
+$pdomodel->where("lastName", 'johny');
+$pdomodel->delete("emp");
+
+# Drop Table
+$pdomodel->dropTable("order_meta");  
+
+# Rename Table
+$pdomodel->renameTable("country", "countryTable");   
+
+# Primary key of a table
+$primaryKey = $pdomodel->primaryKey("wp_posts");
+
+# Truncate table
+$pdomodel->truncateTable("order_meta"); 
+```
+
+
+### Get Columns of a table
+```php
+$columnNames = $pdomodel->columnNames("wp_posts");     
+```
+
+
+### Transactions Function
+```php
+/* PDO Transaction block */
+$pdomodel->dbTransaction = true;//start transactions
+$insertData = array("orderNumber"=>909, "customerName"=>"one", "address"=>"140 shakti nagar");
+$pdomodel->insert("orderTable", $insertData);
+$insertData = array("orderNumber"=>90099, "customerName"=>"two", "address"=>"140 shakti nagar");
+$pdomodel->insert("orderTable", $insertData);
+$pdomodel->commitTransaction();//commit transaction   
+```
+
+
+### Sub Query
+```php
+/* Sub query function */
+$pdomodel->subQuery("select post_id from wp_postmeta where meta_id=?","postmeta", array(20));
+$result =  $pdomodel->select("wp_posts");  
+
+//Example 1 
+//subquery with where and order by etc.
+$pdomodel->subQuery("select post_id from wp_postmeta where meta_id=?","postmeta", array(20));
+$pdomodel->where("p.id", 10, ">=");
+$pdomodel->orderByCols = array("p.id");
+$result =  $pdomodel->select("wp_posts as p")
+```
+
+
+### Batch
+```php
+# INSERT
+/* Insert function */
+$pdomodel->insertBatch("emp", array(array("firstName" => "John", "lastName" => "Jonathan"), array("firstName" => "Simon", "lastName" => "Kane")));
+
+//Example 2
+$insertData = array(array("firstName" => "Johnq", "lastName" => "Jonathan"), array("firstName" => "Michal", "lastName" => "Kane"));
+$pdomodel->insertBatch("emp", $insertData);
+ 
+//Example 3
+$insertEmpData[0]["firstName"] = "Nike"; 
+$insertEmpData[0]["lastName"] = "jason";
+$insertEmpData[0]["age"] = 25;
+$insertEmpData[1]["firstName"] = "Rasaol"; 
+$insertEmpData[1]["lastName"] = "jason";
+$insertEmpData[1]["age"] = 25;
+$pdomodel->insertBatch("emp", $insertEmpData);
+
+# UPDATE
+/* Update function */
+$updateBatchData = array(array("orderNumber" => "78", "customerName" => "BKG", "address" => "140 shakti nagar"), array("orderNumber" => "99", "customerName" => "BKG", "address" => "140 shakti nagar"));
+$where = array(array("orderId", 7), array("orderId", 8));
+$pdomodel->updateBatch("orderTable", $updateBatchData, $where);
+
+//Example 1
+$updateBatchData = array(array("orderNumber" => "78", "customerName" => "BKG", "address" => "140 shakti nagar"), array("orderNumber" => "99", "customerName" => "BKG", "address" => "140 shakti nagar"));
+$where = array(array("orderId", 7), array("orderId", 8));
+$pdomodel->updateBatch("orderTable", $updateBatchData, $where);
+
+# DELETE
+//Example 1
+$where = array(array("empId",70), array("empId",71));
+$pdomodel->deleteBatch("emp",$where);
+```
+
+
+### Export 
+```php
+# CSV Export
+/* array to csv function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToCSV($data);
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToCSV($records, "emp.csv");//export it to csv
+
+
+# PDF Export
+/* array to pdf function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToPDF($data);
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToPDF($records, "emp.pdf");//export it to pdf
+
+
+# Excel Export 
+/* array to excel function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToExcel($data);
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToExcel($records, "emp.xlsx");//export it to excel
+
+
+# HTML Export 
+/* array to html function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToHTML($data);
+echo $pdomodel->outputHTML; // echo output html  
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToHTML($records, "emp.html");//export it to html
+echo $pdomodel->outputHTML; // read output html
+
+
+# XML Export 
+/* array to xml function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToXML($data);
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToXML($records, "emp.xml");//export it to xml
+
+# JSON Export
+/* array to json function */
+$data = array( array("row1col1","row1col2","row1col3","row1col4"),array("row2col1","row2col2","row2col3","row2col4"));
+$pdomodel->arrayToJson($data); 
+
+//Example 1 
+$records = $pdomodel->select("emp"); //get data from table
+$pdomodel->arrayToJson($records);//export it to json
+```
+
+
+### Import
+```php
+# CSV Import
+/* csv to array function */
+$records = $pdomodel->csvToArray("emp.csv");
+
+//Example 2 
+$records = $pdomodel->csvToArray("emp.csv");
+$pdomodel->insertBatch("emp", $records);
+
+# Excel Import
+/* excel to array function */
+$records = $pdomodel->excelToArray("emp.xls");
+
+//Example 2
+$records = $pdomodel->excelToArray("emp.xls");
+$pdomodel->insertBatch("emp", $records);
+
+# XML Import
+/* xml to array function */
+$pdomodel->isFile=true;
+$records = $pdomodel->xmlToArray("emp.xml");
+
+//Example 2 
+$pdomodel->isFile=true;
+$records = $pdomodel->xmlToArray("emp.xml");
+$pdomodel->insertBatch("emp", $records);
+```
+
+
+### Pagination 
+```php
+function pagination($page = 1, $totalrecords, $limit = 10, $adjacents = 1);
+
+echo $pdomodel->pagination( 1, 125, 10, 1);
+
+//Example 1
+ echo $pdomodel->pagination( 1, 125, 10);
 ```
 
 
