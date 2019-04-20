@@ -22,6 +22,9 @@
  * 
   ---------------------------------------------------------------------------------------------------------------
  */
+ 
+namespace Atiksoftware\Database;
+ 
 Class PDOModel {
 
     public $columns = "*";              //columns of table
@@ -89,7 +92,7 @@ Class PDOModel {
     public $htmlTRStyle = "";              // css style for the html table row (tr)
     public $htmlTDStyle = "";              // css style for the html table col (td)
 
-    /*     * ****************************************** PDO Functions ********************************************************* */
+    /*     * ****************************************** \PDO Functions ********************************************************* */
 
     /**
      * Constructor 
@@ -135,7 +138,7 @@ Class PDOModel {
         }
 
         if ($this->connectionStatus == 1) {
-            $this->dbObj->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->dbObj->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } else{
             $this->setErrors("Not able to connect to database. Please check details");
             return false;
@@ -154,9 +157,9 @@ Class PDOModel {
     private function connectMysql() {
 
         try {
-            $this->dbObj = new PDO("mysql:host=$this->dbHostName;dbname=$this->dbName", $this->dbUserName, $this->dbPassword);
+            $this->dbObj = new \PDO("mysql:host=$this->dbHostName;dbname=$this->dbName", $this->dbUserName, $this->dbPassword);
             $this->connectionStatus = 1;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -168,10 +171,10 @@ Class PDOModel {
     private function connectPGsql() {
 
         try {
-            $this->dbObj = new PDO("pgsql:dbname=$this->dbName;host=$this->dbHostName;user=$this->dbUserName;password=$this->dbPassword");
+            $this->dbObj = new \PDO("pgsql:dbname=$this->dbName;host=$this->dbHostName;user=$this->dbUserName;password=$this->dbPassword");
             $this->connectionStatus = 1;
             $this->backtick = "";
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -183,9 +186,9 @@ Class PDOModel {
     private function connectSQLite() {
 
         try {
-            $this->dbObj = new PDO("sqlite:$this->dbSQLitePath");
+            $this->dbObj = new \PDO("sqlite:$this->dbSQLitePath");
             $this->connectionStatus = 1;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -197,9 +200,9 @@ Class PDOModel {
     private function connectSQLServer() {
 
         try {
-            $this->dbObj = new PDO( "sqlsrv:server=$this->dbHostName;Database = $this->dbName", $this->dbUserName, $this->dbPassword);   
+            $this->dbObj = new \PDO( "sqlsrv:server=$this->dbHostName;Database = $this->dbName", $this->dbUserName, $this->dbPassword);   
             $this->connectionStatus = 1;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -213,7 +216,7 @@ Class PDOModel {
                 $this->dbObj->commit();
                 $this->beginTransaction = false;
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -242,7 +245,7 @@ Class PDOModel {
             $this->rowsChanged = $stmt->rowCount();
             $this->lastInsertId = $this->dbObj->lastInsertId();
             $this->resetAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -278,7 +281,7 @@ Class PDOModel {
                 $this->lastInsertId = $this->dbObj->lastInsertId();
                 $this->resetAll();
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -315,7 +318,7 @@ Class PDOModel {
             $this->rowsChanged = $stmt->rowCount();
             $this->lastInsertId = $this->dbObj->lastInsertId();
             $this->resetAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -351,7 +354,7 @@ Class PDOModel {
             $stmt->execute($this->values);
             $this->rowsChanged = $stmt->rowCount();
             $this->resetAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -395,7 +398,7 @@ Class PDOModel {
                 $this->resetAll();
                 $loop++;
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -427,7 +430,7 @@ Class PDOModel {
             $stmt->execute($this->values);
             $this->rowsChanged = $stmt->rowCount();
             $this->resetAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -466,7 +469,7 @@ Class PDOModel {
                 $this->rowsChanged = $stmt->rowCount();
                 $this->resetAll();
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -495,7 +498,7 @@ Class PDOModel {
                 $this->totalRows = count($result);
             $this->resetAll();
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -533,7 +536,7 @@ Class PDOModel {
                 $this->totalRows = count($result);
 
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             if ($this->dbTransaction == true) {
                 $this->dbRollBack = true;
                 $this->dbObj->rollBack();
@@ -707,9 +710,9 @@ Class PDOModel {
                 $this->sql = "DESCRIBE " . $this->parseTable($dbTableName);
             $stmt = $this->dbObj->prepare($this->sql);
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $result = $stmt->fetchAll(\PDO::FETCH_COLUMN);
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -730,7 +733,7 @@ Class PDOModel {
             $stmt->execute();
             $result = $stmt->fetchAll($this->getFetchType());
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -779,7 +782,7 @@ Class PDOModel {
                 return $sqliteData;
             }
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -816,7 +819,7 @@ Class PDOModel {
                     return $result[0]["Column_name"];
             } else
                 return "";
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -831,7 +834,7 @@ Class PDOModel {
             $stmt = $this->dbObj->prepare($this->sql);
             $stmt->execute();
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -849,7 +852,7 @@ Class PDOModel {
             $stmt = $this->dbObj->prepare($this->sql);
             $stmt->execute();
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -869,7 +872,7 @@ Class PDOModel {
             $stmt = $this->dbObj->prepare($this->sql);
             $stmt->execute();
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $this->setErrors($e->getMessage());
         }
     }
@@ -989,12 +992,12 @@ Class PDOModel {
 
     private function getFetchType() {
         switch (strtoupper($this->fetchType)) {
-            case "BOTH": return PDO::FETCH_BOTH;
-            case "NUM": return PDO::FETCH_NUM;
-            case "ASSOC": return PDO::FETCH_ASSOC;
-            case "OBJ": return PDO::FETCH_OBJ;
-            case "COLUMN":return PDO::FETCH_COLUMN;
-            default: return PDO::FETCH_ASSOC;
+            case "BOTH": return \PDO::FETCH_BOTH;
+            case "NUM": return \PDO::FETCH_NUM;
+            case "ASSOC": return \PDO::FETCH_ASSOC;
+            case "OBJ": return \PDO::FETCH_OBJ;
+            case "COLUMN":return \PDO::FETCH_COLUMN;
+            default: return \PDO::FETCH_ASSOC;
         }
     }
 
