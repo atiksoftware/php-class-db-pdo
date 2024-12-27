@@ -887,7 +887,7 @@ Class PDOModel {
         }, $insertData);
 
 
-        $this->parameters = implode($this->parameters, ",");
+        $this->parameters = implode(",", $this->parameters);
         return "INSERT INTO " . $this->parseTable($dbTableName) . " ($this->columns) VALUES ($this->parameters)";
     }
     
